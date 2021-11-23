@@ -19,7 +19,9 @@
            <div class="clearfix"> </div>
            <p class="fgt">Mots de passe oublié?</p>
            <div class="clearfix"> </div>
-           <button class="btn">S'inscrire</button>
+           <button class="btn" @click="login()" :class="{btnDisabled:  isLoading}">
+           <SpinnerBar v-if="isLoading"></SpinnerBar>
+           <span v-else>Se connecter</span></button>
            <p class="ctn">ou continuer avec</p>
            <div class="options spacer"> 
             <img src="../assets/Facebook.svg" class="iconSpace"/>
@@ -162,6 +164,11 @@
         opacity: 0.9;
     }
 
+    .btnDisabled {
+        background-color: grey;
+        cursor: not-allowed;
+    }
+
     .ctn {
         font-family: 'Poppins';
         font-weight: 500;
@@ -176,11 +183,30 @@
         justify-content: center;
         align-items: center;
     }
+
+    
 </style>
 
 <script>
-
+import SpinnerBar from '../components/SpinnerBar';
 export default {
-   
+    name: "Login",
+    data() {
+        return {
+            isLoading: false,
+        };
+    },
+    methods: {
+        login ()  {
+            this.isLoading = true;
+            console.log("Currently login");
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 2000);
+        }
+    },
+    components: {
+        SpinnerBar,
+    }
 }
 </script>
