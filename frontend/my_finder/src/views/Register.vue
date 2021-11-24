@@ -2,13 +2,13 @@
     <div class="register">
         <HeadComponent :isLogin="isLogin" route="/login"></HeadComponent>
         <div class="main">
-            <input type="text" placeholder="Créer un nom d'utilisateur" />
+            <input v-model="username" type="text" placeholder="Créer un nom d'utilisateur" />
             <div class="spacerBtw"></div>
-            <input type="text" placeholder="Numéro de téléphone" />
+            <input v-model="phoneNumber" type="text" placeholder="Numéro de téléphone" />
             <div class="spacerBtw"></div>
-            <PasswordField placeHolder="Mots de passe"></PasswordField>
+            <PasswordField placeHolder="Mots de passe" @getPassword="getPasswordValue"></PasswordField>
             <div class="spacerBtw"></div>
-            <PasswordField placeHolder="Confirmez votre mots de passe"></PasswordField>
+            <PasswordField placeHolder="Confirmez votre mots de passe" @getPassword="getConfirmPassword"></PasswordField>
             <div class="spaceBtn"></div>
             <button class="btn" @click="register()" :class="{btnDisabled:  isLoading}">
                 <SpinnerBar v-if="isLoading"></SpinnerBar>
@@ -32,7 +32,7 @@
          padding: 0 20px 0 20px;
      }
 
-     input {
+    input {
         width: 100%;
         height: 62px;
         border-radius: 8px;
@@ -40,7 +40,7 @@
         border: none;
 
     }
-
+    
     ::placeholder {
         font-family: 'Poppins';
         font-weight: 400;
@@ -92,6 +92,10 @@ export default {
         return {
             isLogin: false,
             isLoading: false,
+            username: null,
+            phoneNumber: null,
+            password: null,
+            confirmPassword: null,
         }
     },
     methods: {
@@ -101,6 +105,14 @@ export default {
             setTimeout(() => {
                 this.isLoading = false;
             }, 2000);
+        },
+        getPasswordValue(event) {
+            console.log(event);
+            this.password = event;
+        },
+        getConfirmPassword(event) {
+            console.log(event);
+            this.confirmPassword = event;
         }
     },
 }

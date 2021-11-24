@@ -1,7 +1,7 @@
 <template>
     <div class="passwd">
-        <input type="password" :placeholder="placeHolder"/>
-        <img src="../assets/invisible.png" class="p-viewer"/>
+        <input :type="type"  :placeholder="placeHolder" @change='$emit("getPassword", $event.target.value)' />
+        <img  :src="imgEyes" class="p-viewer" @click="setTypeValue(!eyesClose)"/>
     </div>
 </template>
 
@@ -11,7 +11,29 @@ export default {
     name: "PasswordField",
     props: {
         placeHolder: {type: String, required: true},
-    }
+    },
+    data() {
+        return {
+            eyesClose: true,
+            type: "password",
+            imgEyes: require("../assets/invisible.png"),
+        }
+    },
+    methods: {
+        setTypeValue(value) {
+            this.type = value;
+            console.log(value);
+            if (value) {
+                this.type = "password";
+                this.imgEyes = require("../assets/invisible.png");
+                this.eyesClose = true;
+            } else {
+                this.type = "text";
+                this.imgEyes = require("../assets/eye.png");
+                this.eyesClose = false;
+            }
+        },
+    },
 }
 
 </script>

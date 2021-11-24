@@ -1,10 +1,10 @@
 <template>
     <div id="login">
-        <HeadComponent isLogin=true route="/register"></HeadComponent>
+        <HeadComponent :isLogin="islogin" route="/register"></HeadComponent>
         <div class="main">
-           <input type="text" placeholder="Entrez votre pseudo"/>
+           <input type="text" placeholder="Entrez votre pseudo" v-model="username" />
            <div class="cSpace"></div>
-           <PasswordField placeHolder="Entrez votre mots de passe"></PasswordField>
+           <PasswordField placeHolder="Entrez votre mots de passe" @getPassword="getPasswordValue"></PasswordField>
            <div class="clearfix"> </div>
            <p class="fgt">Mots de passe oublié?</p>
            <div class="clearfix"> </div>
@@ -118,6 +118,9 @@ export default {
     data() {
         return {
             isLoading: false,
+            username: null,
+            password: null,
+            islogin: true,
         };
     },
     methods: {
@@ -128,6 +131,9 @@ export default {
                 this.isLoading = false;
             }, 2000);
         },
+        getPasswordValue(event) {
+            this.password = event;
+        }
     },
     components: {
         SpinnerBar,
