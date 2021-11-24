@@ -4,20 +4,14 @@
         <div class="main">
            <input type="text" placeholder="Entrez votre pseudo"/>
            <div class="cSpace"></div>
-           <input type="password" placeholder="Entrez votre mots de passe"/>
-           <img src="../assets/invisible.png" class="p-viewer"/>
+           <PasswordField placeHolder="Entrez votre mots de passe"></PasswordField>
            <div class="clearfix"> </div>
            <p class="fgt">Mots de passe oublié?</p>
            <div class="clearfix"> </div>
            <button class="btn" @click="login()" :class="{btnDisabled:  isLoading}">
            <SpinnerBar v-if="isLoading"></SpinnerBar>
            <span v-else>Se connecter</span></button>
-           <p class="ctn">ou continuer avec</p>
-           <div class="options spacer"> 
-            <img src="../assets/Facebook.svg" class="iconSpace"/>
-            <img src="../assets/apple.svg" class="iconSpace"/>
-            <img src="../assets/google.svg" />
-           </div>
+           <BottomComponent></BottomComponent>
         </div>
     </div>
 </template>
@@ -36,16 +30,12 @@
         margin-bottom: 38px;
     }
 
-    .iconSpace {
-        margin-right: 24px;
-    }
-
     .clearfix {
         content: "";
         clear: both;
         display: block;
     }
-    
+
     p {
         margin: 0;
     }
@@ -115,27 +105,14 @@
         cursor: not-allowed;
     }
 
-    .ctn {
-        font-family: 'Poppins';
-        font-weight: 500;
-        margin: 54px 0 47px 0;
-        text-align: center;
-        color: #B5B5B5;
-        font-size: 1.3em;
-    }
-
-    .options {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    
 </style>
 
 <script>
 import SpinnerBar from '../components/SpinnerBar';
 import HeadComponent from '../components/HeadComponent.vue';
+import PasswordField from '../components/PasswordField';
+import BottomComponent from '../components/BottomComponent';
+
 export default {
     name: "Login",
     data() {
@@ -155,6 +132,8 @@ export default {
     components: {
         SpinnerBar,
         HeadComponent,
+        PasswordField,
+        BottomComponent,
     }
 }
 </script>
