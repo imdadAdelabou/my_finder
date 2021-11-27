@@ -1,28 +1,36 @@
 <template>
     <div class="passwd">
-        <input :type="type"  :placeholder="placeHolder" @change='$emit("getPassword", $event.target.value)' />
+        <input :type="type" v-model="v$.password.$model" :placeholder="placeHolder" @change='$emit("getPassword", $event.target.value)'  />
         <img  :src="imgEyes" class="p-viewer" @click="setTypeValue(!eyesClose)"/>
     </div>
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core';
+import {required} from '@vuelidate/validators';
 
 export default {
+    setup: () => ({ v$: useVuelidate() }),
     name: "PasswordField",
     props: {
         placeHolder: {type: String, required: true},
     },
     data() {
         return {
+            password: null,
             eyesClose: true,
             type: "password",
             imgEyes: require("../assets/invisible.png"),
         }
     },
+    validations: {
+        password: {
+            required
+        }
+    },
     methods: {
         setTypeValue(value) {
             this.type = value;
-            console.log(value);
             if (value) {
                 this.type = "password";
                 this.imgEyes = require("../assets/invisible.png");

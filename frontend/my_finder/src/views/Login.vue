@@ -2,15 +2,19 @@
     <div id="login">
         <HeadComponent :isLogin="islogin" route="/register"></HeadComponent>
         <div class="main">
-           <input type="text" placeholder="Entrez votre pseudo" v-model="username" />
-           <div class="cSpace"></div>
-           <PasswordField placeHolder="Entrez votre mots de passe" @getPassword="getPasswordValue"></PasswordField>
-           <div class="clearfix"> </div>
-           <p class="fgt">Mots de passe oublié?</p>
-           <div class="clearfix"> </div>
-           <button class="btn" @click="login()" :class="{btnDisabled:  isLoading}">
-           <SpinnerBar v-if="isLoading"></SpinnerBar>
-           <span v-else>Se connecter</span></button>
+            <form @submit.prevent="onSubmit">
+                <input type="text" placeholder="Entrez votre pseudo" v-model="v$.username.$model" />
+                <span class="error"  v-if="v$.username.$error">*Veuillez entrer votre nom d'utilisateur.</span>
+                <div class="cSpace"></div>
+                <PasswordField placeHolder="Entrez votre mots de passe" @getPassword="getPasswordValue" v-model="v$.password.model" ></PasswordField>
+                <span class="error" v-if="v$.password.$error">Le mots de passe est obligatoire. Veuillez entrer votre réponse.</span>
+                <div class="clearfix"> </div>
+                <p class="fgt">Mots de passe oublié?</p>
+                <div class="clearfix"> </div>
+                <button class="btn" @click="login()" :class="{btnDisabled:  isLoading}">
+                <SpinnerBar v-if="isLoading"></SpinnerBar>
+                <span v-else>Se connecter</span></button>
+           </form>
            <BottomComponent></BottomComponent>
         </div>
     </div>
@@ -52,6 +56,11 @@
         border: none;
 
     }
+
+    input.invalid{
+  border-color: #900;
+  background-color: #FDD;
+}
 
     ::placeholder {
         font-family: 'Poppins';
@@ -105,6 +114,11 @@
         cursor: not-allowed;
     }
 
+    .error {
+        color: red;
+        font-weight: 400;
+        font-family: 'Poppins';
+    }
 </style>
 
 <script>
@@ -112,8 +126,11 @@ import SpinnerBar from '../components/SpinnerBar';
 import HeadComponent from '../components/HeadComponent.vue';
 import PasswordField from '../components/PasswordField';
 import BottomComponent from '../components/BottomComponent';
+import useVuelidate from '@vuelidate/core';
+import {required} from '@vuelidate/validators';
 
 export default {
+    setup: () => ({ v$: useVuelidate() }),
     name: "Login",
     data() {
         return {
@@ -121,15 +138,26 @@ export default {
             username: null,
             password: null,
             islogin: true,
+           
         };
     },
+    validations: {
+            username: {
+                required
+            },
+            password: {
+                required
+            }
+    },
     methods: {
-        login() {
-            this.isLoading = true;
-            console.log("Currently login");
-            setTimeout(() => {
-                this.isLoading = false;
-            }, 2000);
+       async login() {
+                const isCorrect = await this.v$.$validate();
+                if (isCorrect) {
+                    this.isLoading = true;
+                    setTimeout(() => {
+                        this.isLoading = false;
+                    }, 2000);
+                }
         },
         getPasswordValue(event) {
             this.password = event;
@@ -140,6 +168,6 @@ export default {
         HeadComponent,
         PasswordField,
         BottomComponent,
-    }
+    },
 }
 </script>
